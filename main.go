@@ -1,10 +1,12 @@
 package main
 
 func main() {
-	var x = Engine{grid: [][]string{
-		{"x", "x", "x"},
+	var game = Engine{grid: [][]string{
+		{"x", "x", "h"},
 		{"y", "y", "y"},
 		{"z", "z", "z"},
 	}}
-	x.Render()
+
+	game.grid[0][0] = "l"
+	game.Render()
 }
