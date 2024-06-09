@@ -1,4 +1,10 @@
 package main
 
-type Client struct {
-}
+var Board = `
+
+		|		|
+	---------
+		|		|
+	---------
+		|		|
+`
