@@ -1,5 +1,5 @@
 build:
-    go build -o bin/tick *.go
+	go build -o bin/tick/*.go
 
 run:
-    go run .
+	go run .
