@@ -1,7 +1,8 @@
 package main
 
-import "fmt"
-
 func main() {
-	fmt.Println("")
+	var x = Engine{grid: [][]string{
+		{"x"},
+	}}
+	x.Render()
 }

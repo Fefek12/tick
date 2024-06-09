@@ -1,6 +1,6 @@
 build:
-	go build -o bin/tick src/*.go
+	go build -o bin/tick *.go
 
 run:
-	go run main.go
+	go run .
 
