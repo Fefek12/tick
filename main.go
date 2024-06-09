@@ -3,7 +3,7 @@ package main
 import "github.com/Fefek12/tick/Server"
 
 func main() {
-	var game = Engine{grid: [][]string{
+	var game = Engine{grid: [3][3]string{
 		{"x", "x", "h"},
 		{"y", "y", "y"},
 		{"z", "z", "z"},

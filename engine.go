@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 type Engine struct {
-	grid [][]string
+	grid [3][3]string
 }
 
 func (engine *Engine) Render() {
