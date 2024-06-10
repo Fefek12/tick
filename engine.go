@@ -3,10 +3,11 @@ package main
 import "fmt"
 
 type Engine struct {
-	grid [][]string
+	grid [3][3]string
 }
 
 func (engine *Engine) Render() {
+	clear()
 	for x := 0; x < len(engine.grid); x++ {
 		if x == 0 {
 			fmt.Println("     |     |     ")

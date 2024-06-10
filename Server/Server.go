@@ -1,30 +1,45 @@
-package server
+package Server
 
 import (
 	"fmt"
-	"net/http"
+	"net"
 )
 
 type Server struct {
-	addr string
-	port int64
+	port string
 }
 
 type Delta struct {
 }
 
-func (s *Server) newServer(addr string, port int64) *Server {
+func NewServer(port string) *Server {
 	return &Server{
-		addr: addr,
 		port: port,
 	}
 }
 
-func getDeltaHandler(w http.ResponseWriter, r *http.Response) {
+func handleConnection(connection net.Conn) {
+	fmt.Println("Accepted COnnection from ", connection.RemoteAddr())
 
+	defer connection.Close()
 }
 
 func (s *Server) Start() {
-	http.ListenAndServe(s.addr, nil)
-	fmt.Printf("Server Listening on %d", s.port)
+	listener, err := net.Listen("tcp", s.port)
+	if err != nil {
+		fmt.Println("Error", err)
+		return
+	}
+
+	defer listener.Close()
+	fmt.Printf("Server is Listening at Port %s", s.port)
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			fmt.Println("Error with Connection")
+			continue
+		}
+		go handleConnection(conn)
+	}
+
 }
