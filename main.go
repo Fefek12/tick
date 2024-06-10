@@ -8,7 +8,7 @@ func main() {
 		{"y", "y", "y"},
 		{"z", "z", "z"},
 	}}
-
+	loading_screen("127.0.0.1")
 	s := Server.NewServer(":8080")
 	s.Start()
 	game.grid[0][0] = "l"
