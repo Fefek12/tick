@@ -6,5 +6,9 @@ func main() {
 		{"y", "y", "y"},
 		{"z", "z", "z"},
 	}}
+
+	loading_screen("127.0.0.1")
+
 	x.Render()
+
 }
