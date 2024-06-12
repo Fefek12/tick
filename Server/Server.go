@@ -19,20 +19,21 @@ func NewServer(port string) *Server {
 }
 
 func handleConnection(connection net.Conn) {
-	fmt.Println("Accepted COnnection from ", connection.RemoteAddr())
+	fmt.Println("Accepted Connection from ", connection.RemoteAddr())
 
 	defer connection.Close()
 }
 
 func (s *Server) Start() {
-	listener, err := net.Listen("tcp", s.port)
+	port := ":" + s.port
+	listener, err := net.Listen("tcp", port)
 	if err != nil {
 		fmt.Println("Error", err)
 		return
 	}
 
 	defer listener.Close()
-	fmt.Printf("Server is Listening at Port %s", s.port)
+	fmt.Printf("Server is Listening at Port %s", port)
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
