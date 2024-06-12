@@ -25,8 +25,10 @@ func handleConnection(connection net.Conn) {
 }
 
 func (s *Server) Start() {
+	connCount := 0
 	port := ":" + s.port
 	listener, err := net.Listen("tcp", port)
+
 	if err != nil {
 		fmt.Println("Error", err)
 		return
@@ -40,7 +42,14 @@ func (s *Server) Start() {
 			fmt.Println("Error with Connection")
 			continue
 		}
-		go handleConnection(conn)
+		if connCount < 6 {
+			fmt.Println(connCount)
+			go handleConnection(conn)
+			connCount++
+		} else {
+			fmt.Println("Connection count is Over 2")
+		}
+
 	}
 
 }

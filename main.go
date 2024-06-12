@@ -7,8 +7,6 @@ func main() {
 	// 	{"z", "z", "z"},
 	// }}
 	intro()
-	// s := Server.NewServer(":8080")
-	// s.Start()
 	// game.grid[0][0] = "l"
 	// game.Render()
 }
