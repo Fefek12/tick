@@ -21,7 +21,14 @@ func intro() {
 		joinAddr, _ := buffReader.ReadString('\n')
 		joinAddr = strings.TrimSpace(joinAddr)
 		loading_screen(joinAddr)
-		NewClient(joinAddr)
+		c, err := NewClient(joinAddr)
+		if err != nil {
+			panic(err)
+		}
+		game := Engine{
+			c.state,
+		}
+		game.Render()
 	case "host":
 		fmt.Print("Enter Port under LocalHost to Host: ")
 		hostAddr, _ := buffReader.ReadString('\n')

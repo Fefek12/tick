@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
@@ -16,9 +17,8 @@ type ClientConn interface {
 }
 
 type Client struct {
-	addr  string
-	state [3][3]string `json:board`
-	conn  net.Conn
+	state [3][3]string
+	// startDelta string
 }
 
 func NewClient(port string) (*Client, error) {
@@ -29,6 +29,23 @@ func NewClient(port string) (*Client, error) {
 	}
 	msg := fmt.Sprintf("Connection was made too %s", conn.RemoteAddr())
 	fmt.Println(msg)
-	return &Client{}, nil
+
+	buff := make([]byte, 1024)
+	size, err := conn.Read(buff)
+	if err != nil {
+		fmt.Println("Error reading Buffer", err)
+	}
+	var boardState [3][3]string
+
+	err = json.Unmarshal(buff[:size], &boardState)
+	if err != nil {
+		panic(err)
+	}
+
+	defer conn.Close()
+
+	return &Client{
+		state: boardState,
+	}, nil
 
 }
