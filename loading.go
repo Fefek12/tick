@@ -9,7 +9,6 @@ import (
 
 func loading_screen(ip string) {
 	clear()
-	printTitle()
 	progress := ProgressBar{
 		total:       100,
 		length:      50,
@@ -17,24 +16,23 @@ func loading_screen(ip string) {
 		enabled:     true,
 	}
 	time.Sleep(1 * time.Second)
-	progress.change(0, "Loading ...", "Doing something\n")
+	progress.change(0, "Loading ...", "Initializing\n")
 	time.Sleep(500 * time.Millisecond)
-	progress.change(20, "Loading ...", "Connecting to "+ip+"\n")
+	progress.change(20, "Loading ...", "Connecting to "+"Localhost:"+ip+"\n")
 	time.Sleep(1 * time.Second)
-	progress.change(40, "Loading ...", "Doing something\n")
+	progress.change(40, "Loading ...", "We will be done soon\n")
 	time.Sleep(1 * time.Second)
-	progress.change(60, "Loading ...", "Doing something else\n")
+	progress.change(60, "Loading ...", "Welcome to Tick\n")
 	time.Sleep(1 * time.Second)
-	progress.change(80, "Loading ...", "Idk\n")
+	progress.change(80, "Loading ...", "Downloading Assests\n")
 	time.Sleep(1 * time.Second)
 	progress.change(100, "Loading ...", "Final task\n")
 	time.Sleep(1 * time.Second)
 	progress.clean()
 	clear()
-	printTitle()
 }
 
-func printTitle() {
+func PrintTitle() {
 	fmt.Println(Cyan + "████████ ██  ██████     ████████  █████   ██████     ████████  ██████  ███████")
 	fmt.Println("   ██    ██ ██             ██    ██   ██ ██             ██    ██    ██ ██      ")
 	fmt.Println("   ██    ██ ██             ██    ███████ ██             ██    ██    ██ █████")
