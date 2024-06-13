@@ -50,5 +50,4 @@ func NewClient(port string) (*Client, error) {
 		state: boardState,
 	}, nil
 }
-
 // func (c *Client) play(delta string) error {}
