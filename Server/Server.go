@@ -58,6 +58,8 @@ func (s *Server) Start() {
 		}
 		//Refactor this later and Pass the connCount to the handle function so it can do the check on its own thread
 		if connCount < 2 {
+			fmt.Println("")
+			fmt.Print("Connected", conn.LocalAddr().String()+"\n")
 			go handleConnection(conn)
 			m = append(m, conn.LocalAddr().String())
 			connCount++
