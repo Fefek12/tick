@@ -29,5 +29,3 @@ func (engine *Engine) Render() {
 		}
 	}
 }
-
-

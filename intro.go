@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Fefek12/tick/Server"
 )
@@ -29,6 +30,11 @@ func intro() {
 			c.state,
 		}
 		game.Render()
+		for {
+			time.Sleep(time.Millisecond * 1000)
+			game.Render()
+		}
+
 	case "host":
 		fmt.Print("Enter Port under LocalHost to Host: ")
 		hostAddr, _ := buffReader.ReadString('\n')

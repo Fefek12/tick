@@ -27,8 +27,6 @@ func handleConnection(connection net.Conn) {
 		{"y", "y", "y"},
 		{"z", "z", "z"},
 	}
-	m := make([]string, 2)
-	fmt.Println("Accepted Connection from ", connection.RemoteAddr())
 	boardByte, err := json.Marshal(initBoardState)
 	if err != nil {
 		fmt.Println("Error Mashaling Board", err)
@@ -43,13 +41,13 @@ func handleConnection(connection net.Conn) {
 
 func (s *Server) Start() {
 	connCount := 0
+	m := make([]string, 2)
 	port := ":" + s.port
 	listener, err := net.Listen("tcp", port)
 	if err != nil {
 		fmt.Println("Error", err)
 		return
 	}
-
 	defer listener.Close()
 	fmt.Printf("Server is Listening at Port %s", port)
 	for {
@@ -58,9 +56,10 @@ func (s *Server) Start() {
 			fmt.Println("Error with Connection", conn)
 			continue
 		}
+		//Refactor this later and Pass the connCount to the handle function so it can do the check on its own thread
 		if connCount < 2 {
-			fmt.Println(connCount)
 			go handleConnection(conn)
+			m = append(m, conn.LocalAddr().String())
 			connCount++
 		} else {
 			fmt.Println("Unable to Accept Connection as Connection count is Over 2")
