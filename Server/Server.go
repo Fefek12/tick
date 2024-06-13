@@ -11,6 +11,8 @@ type Server struct {
 }
 
 type Delta struct {
+	state [3][3]string `json:"boardState"`
+	done  bool         `json:"done"`
 }
 
 func NewServer(port string) *Server {
