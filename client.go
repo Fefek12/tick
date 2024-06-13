@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net"
 )
@@ -25,7 +24,7 @@ func NewClient(port string) (*Client, error) {
 	addr := fmt.Sprintf("localhost:%s", port)
 	conn, err := net.Dial(SERVER_TYPE, addr)
 	if err != nil {
-		return nil, errors.New("error connecting to server")
+		panic(err)
 	}
 	msg := fmt.Sprintf("Connection was made too %s", conn.RemoteAddr())
 	fmt.Println(msg)
@@ -34,6 +33,9 @@ func NewClient(port string) (*Client, error) {
 	size, err := conn.Read(buff)
 	if err != nil {
 		fmt.Println("Error reading Buffer", err)
+	}
+	if string(buff[:size]) == "404" {
+		panic("Connection to Server is full")
 	}
 	var boardState [3][3]string
 
@@ -47,5 +49,5 @@ func NewClient(port string) (*Client, error) {
 	return &Client{
 		state: boardState,
 	}, nil
-
 }
+// func (c *Client) play(delta string) error {}
