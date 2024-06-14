@@ -7,7 +7,7 @@ import (
 
 //i don't have the code that actually does stuff, so i'll just add random tasks
 
-func loading_screen(ip string) {
+func loading_screen(port string) {
 	clear()
 	progress := ProgressBar{
 		total:       100,
@@ -18,7 +18,7 @@ func loading_screen(ip string) {
 	time.Sleep(1 * time.Second)
 	progress.change(0, "Loading ...", "Initializing\n")
 	time.Sleep(500 * time.Millisecond)
-	progress.change(20, "Loading ...", "Connecting to "+"Localhost:"+ip+"\n")
+	progress.change(20, "Loading ...", "Connecting to "+"Localhost:"+port+"\n")
 	time.Sleep(1 * time.Second)
 	progress.change(40, "Loading ...", "We will be done soon\n")
 	time.Sleep(1 * time.Second)

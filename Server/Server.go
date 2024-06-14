@@ -30,12 +30,18 @@ func handleConnection(connection net.Conn) {
 	boardByte, err := json.Marshal(initBoardState)
 	if err != nil {
 		fmt.Println("Error Mashaling Board", err)
-		return
 	}
 	_, err = connection.Write(boardByte)
 	if err != nil {
 		fmt.Println("Error Sending Message", err)
-		return
+	}
+	for {
+		byt := make([]byte, 1024)
+		size, err := connection.Read(byt)
+
+		if err == nil {
+			fmt.Println(string(byt[:size]))
+		}
 	}
 }
 
@@ -57,7 +63,7 @@ func (s *Server) Start() {
 			continue
 		}
 		//Refactor this later and Pass the connCount to the handle function so it can do the check on its own thread
-		if connCount < 2 {
+		if connCount < 100 {
 			fmt.Println("")
 			fmt.Print("Connected", conn.LocalAddr().String()+"\n")
 			go handleConnection(conn)

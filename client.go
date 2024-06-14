@@ -11,24 +11,24 @@ const (
 	SERVER_TYPE = "tcp"
 )
 
-type ClientConn interface {
+type clientConn interface {
 	connect() (bool, error)
 }
 
-type Client struct {
+type client struct {
 	state [3][3]string
 	// startDelta string
+	connection net.Conn
 }
 
-func NewClient(port string) (*Client, error) {
+func NewClient(port string) (*client, error) {
 	addr := fmt.Sprintf("localhost:%s", port)
 	conn, err := net.Dial(SERVER_TYPE, addr)
 	if err != nil {
 		panic(err)
 	}
-	msg := fmt.Sprintf("Connection was made too %s", conn.RemoteAddr())
+	msg := fmt.Sprintf("Connection was made too %s", conn.RemoteAddr().String())
 	fmt.Println(msg)
-
 	buff := make([]byte, 1024)
 	size, err := conn.Read(buff)
 	if err != nil {
@@ -43,11 +43,13 @@ func NewClient(port string) (*Client, error) {
 	if err != nil {
 		panic(err)
 	}
-
-	defer conn.Close()
-
-	return &Client{
-		state: boardState,
+	return &client{
+		state:      boardState,
+		connection: conn,
 	}, nil
 }
-// func (c *Client) play(delta string) error {}
+
+func (c *client) SendDelta(res string) {
+	c.connection.Write([]byte(res))
+
+}
