@@ -8,6 +8,7 @@ type Engine struct {
 
 func (engine *Engine) Render() {
 	clear()
+	PrintTitle()
 	for x := 0; x < len(engine.grid); x++ {
 		if x == 0 {
 			fmt.Println("     |     |     ")

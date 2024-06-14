@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/Fefek12/tick/Server"
 )
@@ -29,12 +28,22 @@ func intro() {
 		game := Engine{
 			c.state,
 		}
-		game.Render()
+		clear()
+		sendDelta := false
 		for {
-			time.Sleep(time.Millisecond * 1000)
+			sendDelta = false
 			game.Render()
+			for !sendDelta {
+				buffReader := bufio.NewReader(os.Stdin)
+				fmt.Println("Enter X or O and Cords")
+				res, err := buffReader.ReadString('\n')
+				if err != nil {
+					fmt.Println("Error Processing Input")
+				}
+				go c.SendDelta(res)
+				sendDelta = true
+			}
 		}
-
 	case "host":
 		fmt.Print("Enter Port under LocalHost to Host: ")
 		hostAddr, _ := buffReader.ReadString('\n')
