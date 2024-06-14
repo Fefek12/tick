@@ -51,5 +51,5 @@ func NewClient(port string) (*client, error) {
 
 func (c *client) SendDelta(res string) {
 	c.connection.Write([]byte(res))
-
+	return
 }
