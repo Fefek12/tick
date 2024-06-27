@@ -1,13 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Engine struct {
 	grid [3][3]string
 }
 
 func (engine *Engine) Render() {
-	clear()
+	// clear()
 	PrintTitle()
 	for x := 0; x < len(engine.grid); x++ {
 		if x == 0 {

@@ -25,24 +25,15 @@ func intro() {
 		if err != nil {
 			panic(err)
 		}
-		game := Engine{
-			c.state,
-		}
-		clear()
-		sendDelta := false
 		for {
-			sendDelta = false
-			game.Render()
-			for !sendDelta {
-				buffReader := bufio.NewReader(os.Stdin)
-				fmt.Println("Enter X or O and Cords")
-				res, err := buffReader.ReadString('\n')
-				if err != nil {
-					fmt.Println("Error Processing Input")
-				}
-				go c.SendDelta(res)
-				sendDelta = true
+			c.Render()
+			buffReader := bufio.NewReader(os.Stdin)
+			fmt.Println("Enter X or O and Cords")
+			res, err := buffReader.ReadString('\n')
+			if err != nil {
+				fmt.Println("Error Processing Input")
 			}
+			go c.SendDelta(res)
 		}
 	case "host":
 		fmt.Print("Enter Port under LocalHost to Host: ")
