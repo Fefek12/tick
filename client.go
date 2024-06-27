@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"net"
+	"sync"
 )
 
 const (
@@ -11,14 +13,10 @@ const (
 	SERVER_TYPE = "tcp"
 )
 
-type clientConn interface {
-	connect() (bool, error)
-}
-
 type client struct {
-	state [3][3]string
-	// startDelta string
+	state      [3][3]string
 	connection net.Conn
+	mutx       sync.Mutex
 }
 
 func NewClient(port string) (*client, error) {
@@ -27,6 +25,7 @@ func NewClient(port string) (*client, error) {
 	if err != nil {
 		panic(err)
 	}
+
 	msg := fmt.Sprintf("Connection was made too %s", conn.RemoteAddr().String())
 	fmt.Println(msg)
 	buff := make([]byte, 1024)
@@ -38,7 +37,6 @@ func NewClient(port string) (*client, error) {
 		panic("Connection to Server is full")
 	}
 	var boardState [3][3]string
-
 	err = json.Unmarshal(buff[:size], &boardState)
 	if err != nil {
 		panic(err)
@@ -46,10 +44,44 @@ func NewClient(port string) (*client, error) {
 	return &client{
 		state:      boardState,
 		connection: conn,
+		mutx:       sync.Mutex{},
 	}, nil
 }
 
+func (c *client) Render() {
+	c.fetchBoard()
+	c.mutx.Lock()
+	fmt.Println("Preparing Engine")
+	eng := Engine{
+		c.state,
+	}
+	c.mutx.Unlock()
+	eng.Render()
+}
+
+func (c *client) fetchBoard() {
+	fmt.Println("Fetching Board")
+	reader := bufio.NewReader(c.connection)
+	var board [3][3]string
+	data, err := reader.ReadBytes('\n')
+	if err != nil {
+		fmt.Println("Error Reading Bytes", err)
+	}
+
+	err = json.Unmarshal(data, &board)
+	if err != nil {
+		fmt.Println("Error Unmashaling", err)
+	}
+	c.mutx.Lock()
+	fmt.Println("New Board Recieved", board)
+	c.state = board
+	fmt.Println("Board has been added to client", c.state)
+	c.mutx.Unlock()
+}
+
 func (c *client) SendDelta(res string) {
-	c.connection.Write([]byte(res))
-	return
+	_, err := c.connection.Write([]byte(res + "\n"))
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 }
